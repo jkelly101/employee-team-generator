@@ -3,19 +3,23 @@
 const Employee = require("./Employee.js");
 
 class Intern extends Employee {
-    constructor(id, school){
-        this.id = id;
-        this.school = school;
-    };
+  constructor(id, school) {
+    this.id = id;
+    this.school = school;
+
     super(id, name, email);
-    getSchool();
+  }
+
+  getSchool() {
+    console.log(school);
+  }
 }
 
 module.exports = Intern;
 
 // In addition to `Employee`'s properties and methods, `Intern` will also have:
 
-//   * school 
+//   * school
 
 //   * getSchool()
 
