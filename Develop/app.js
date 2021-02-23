@@ -13,6 +13,7 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+// Questions asked to all users:
 const questions = [
   {
     type: "input",
@@ -32,9 +33,48 @@ const questions = [
   },
 ];
 
+const managerQuestions = [
+  {
+    type: "input",
+    name: "officeNumber",
+    message: "What is your office number?",
+  },
+];
+
+const engineerQuestions = [
+  {
+    type: "input",
+    name: "gitHubUsername",
+    message: "What is your GitHub username?",
+  },
+];
+
+const internQuestions = [
+  {
+    type: "input",
+    name: "school",
+    message: "What is the name of your school?",
+  },
+];
+
 function init() {
   inquirer.prompt(questions).then((response) => {
-    console.log(response);
+    // console.log(response);
+    if (response.role == "Manager") {
+      inquirer.prompt(managerQuestions).then((response) => {
+        console.log(response);
+      });
+    } else if (response.role == "Engineer") {
+      inquirer.prompt(engineerQuestions).then((response) => {
+        console.log(response);
+      });
+    } else if (response.role == "Intern") {
+      inquirer.prompt(internQuestions).then((response) => {
+        console.log(response);
+      });
+    } else {
+      console.log(response.role);
+    }
   });
 }
 
