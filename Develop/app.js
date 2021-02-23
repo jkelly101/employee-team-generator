@@ -9,11 +9,12 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Manager");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-// Questions 
+// Questions
 const questions = [
   {
     type: "input",
@@ -28,7 +29,7 @@ const questions = [
   {
     type: "list",
     name: "role",
-    choices: ["Employee", "Engineer", "Intern", "Manager"],
+    choices: ["Engineer", "Intern", "Manager"],
     message: "Choose your role.",
   },
 ];
@@ -57,6 +58,7 @@ const internQuestions = [
   },
 ];
 
+// Initialize inquirer with conditional questions based on chosen role.
 function init() {
   inquirer.prompt(questions).then((response) => {
     // console.log(response);
@@ -72,20 +74,21 @@ function init() {
       inquirer.prompt(internQuestions).then((response) => {
         console.log(response);
       });
-    } else {
-      console.log(response.role);
     }
   });
 }
 
-
+// Create new objects
+const employee = new Employee();
+const manager = new Manager();
+const engineer = new Engineer();
+const intern = new Intern();
 
 init();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
