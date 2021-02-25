@@ -15,6 +15,14 @@ const Employee = require("./lib/Manager");
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // Questions
+
+const roleQuestion = {
+  type: "list",
+  name: "role",
+  choices: ["Engineer", "Intern", "Manager"],
+  message: "Choose your role.",
+};
+
 const questions = [
   {
     type: "input",
@@ -26,63 +34,60 @@ const questions = [
     name: "email",
     message: "What is your email address?",
   },
-  {
-    type: "list",
-    name: "role",
-    choices: ["Engineer", "Intern", "Manager"],
-    message: "Choose your role.",
-  },
 ];
 
-const managerQuestions = [
-  {
-    type: "input",
-    name: "officeNumber",
-    message: "What is your office number?",
-  },
-];
+const managerQuestion = {
+  type: "input",
+  name: "officeNumber",
+  message: "What is your office number?",
+};
 
-const engineerQuestions = [
-  {
-    type: "input",
-    name: "gitHubUsername",
-    message: "What is your GitHub username?",
-  },
-];
+const engineerQuestion = {
+  type: "input",
+  name: "gitHubUsername",
+  message: "What is your GitHub username?",
+};
 
-const internQuestions = [
-  {
-    type: "input",
-    name: "school",
-    message: "What is the name of your school?",
-  },
-];
+const internQuestion = {
+  type: "input",
+  name: "school",
+  message: "What is the name of your school?",
+};
 
-// Initialize inquirer with conditional questions based on chosen role.
-function init() {
-  inquirer.prompt(questions).then((response) => {
-    // console.log(response);
+// 1 function to ask the initial question of who you are creating
+function roles() {
+  inquirer.prompt(roleQuestion).then((response) => {
     if (response.role == "Manager") {
-      inquirer.prompt(managerQuestions).then((response) => {
-        console.log(response);
-      });
+      questions.push(managerQuestion);
+      askQuestions();
     } else if (response.role == "Engineer") {
-      inquirer.prompt(engineerQuestions).then((response) => {
-        console.log(response);
-      });
+      questions.push(engineerQuestion);
+      askQuestions();
     } else if (response.role == "Intern") {
-      inquirer.prompt(internQuestions).then((response) => {
-        console.log(response);
-      });
+      questions.push(internQuestion);
+      askQuestions();
     }
   });
 }
 
+// 1 function for each of the object types to create (3 all together)
+// after the questions of the current object are done, you call the initial question function
+function askQuestions() {
+  inquirer.prompt(questions).then((response) => {
+    console.log(response);
+  });
+}
+// Initialize inquirer with conditional questions based on chosen role.
+
+function init() {
+  roles();
+}
+
 // Create new objects
-const employee = new Employee();
-const manager = new Manager();
-const engineer = new Engineer();
-const intern = new Intern();
+// const employee = new Employee();
+// const manager = new Manager();
+// const engineer = new Engineer();
+// const intern = new Intern();
 
 init();
 
