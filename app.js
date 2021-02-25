@@ -84,10 +84,10 @@ function init() {
 }
 
 // Create new objects
-// const employee = new Employee();
-// const manager = new Manager();
-// const engineer = new Engineer();
-// const intern = new Intern();
+const employee = new Employee();
+const manager = new Manager();
+const engineer = new Engineer();
+const intern = new Intern();
 
 init();
 
