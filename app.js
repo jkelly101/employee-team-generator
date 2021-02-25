@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const Employee = require("./lib/Manager");
+const { listenerCount } = require("events");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -54,6 +55,8 @@ const internQuestion = {
   message: "What is the name of your school?",
 };
 
+const employees = [];
+
 // 1 function to ask the initial question of who you are creating
 function roles() {
   inquirer.prompt(roleQuestion).then((response) => {
@@ -70,11 +73,27 @@ function roles() {
   });
 }
 
+const more = {
+  type: "list",
+  name: "continue",
+  choices: ["yes", "no"],
+  message: "Would you like to add more employees?",
+};
+
+// function addEmployee() {
+//   inquirer.prompt(more).then((response) => {
+//     if (response.more == "yes") {
+//       roles();
+//     }
+//   });
+// }
+
 // 1 function for each of the object types to create (3 all together)
 // after the questions of the current object are done, you call the initial question function
 function askQuestions() {
   inquirer.prompt(questions).then((response) => {
-    console.log(response);
+    employees.push(response);
+    // addEmployee();
   });
 }
 // Initialize inquirer with conditional questions based on chosen role.
@@ -82,12 +101,6 @@ function askQuestions() {
 function init() {
   roles();
 }
-
-// Create new objects
-const employee = new Employee();
-const manager = new Manager();
-const engineer = new Engineer();
-const intern = new Intern();
 
 init();
 
