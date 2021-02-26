@@ -9,7 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const Employee = require("./lib/Manager");
+const Employee = require("./lib/Employee");
 const { listenerCount } = require("events");
 
 // Write code to use inquirer to gather information about the development team members,
@@ -80,20 +80,24 @@ const more = {
   message: "Would you like to add more employees?",
 };
 
-// function addEmployee() {
-//   inquirer.prompt(more).then((response) => {
-//     if (response.more == "yes") {
-//       roles();
-//     }
-//   });
-// }
+function addEmployee() {
+  inquirer
+    .prompt(more)
+    .then((response) => {
+      console.log(response);
+      if (response.continue == "yes") {
+        roles();
+      }
+    })
+    .then(() => console.log(employees));
+}
 
 // 1 function for each of the object types to create (3 all together)
 // after the questions of the current object are done, you call the initial question function
 function askQuestions() {
   inquirer.prompt(questions).then((response) => {
     employees.push(response);
-    // addEmployee();
+    addEmployee();
   });
 }
 // Initialize inquirer with conditional questions based on chosen role.
