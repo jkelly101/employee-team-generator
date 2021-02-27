@@ -10,7 +10,6 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const Employee = require("./lib/Employee");
-const { listenerCount } = require("events");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -29,6 +28,11 @@ const questions = [
     type: "input",
     name: "name",
     message: "What is your name (first & last)?",
+  },
+  {
+    type: "input",
+    name: "id",
+    message: "What is your employee ID?",
   },
   {
     type: "input",
@@ -61,14 +65,11 @@ const employees = [];
 function roles() {
   inquirer.prompt(roleQuestion).then((response) => {
     if (response.role == "Manager") {
-      questions.push(managerQuestion);
-      askQuestions();
+      askQuestions(questions.concat(managerQuestion), "Manager");
     } else if (response.role == "Engineer") {
-      questions.push(engineerQuestion);
-      askQuestions();
+      askQuestions(questions.concat(engineerQuestion), "Engineer");
     } else if (response.role == "Intern") {
-      questions.push(internQuestion);
-      askQuestions();
+      askQuestions(questions.concat(internQuestion), "Intern");
     }
   });
 }
@@ -80,24 +81,47 @@ const more = {
   message: "Would you like to add more employees?",
 };
 
-function addEmployee() {
-  inquirer
-    .prompt(more)
-    .then((response) => {
-      console.log(response);
-      if (response.continue == "yes") {
-        roles();
-      }
-    })
-    .then(() => console.log(employees));
+function addMore() {
+  inquirer.prompt(more).then((response) => {
+    // console.log(response);
+    if (response.continue == "yes") {
+      roles();
+    } else {
+      console.log(employees);
+      writeHTML(outputPath, render(employees));
+    }
+  });
 }
 
 // 1 function for each of the object types to create (3 all together)
 // after the questions of the current object are done, you call the initial question function
-function askQuestions() {
-  inquirer.prompt(questions).then((response) => {
-    employees.push(response);
-    addEmployee();
+function askQuestions(arr, employeeType) {
+  inquirer.prompt(arr).then((response) => {
+    let employee;
+    if (employeeType === "Intern") {
+      employee = new Intern(
+        response.name,
+        response.id,
+        response.email,
+        response.school
+      );
+    } else if (employeeType === "Manager") {
+      employee = new Manager(
+        response.name,
+        response.id,
+        response.email,
+        response.officeNumber
+      );
+    } else if (employeeType === "Engineer") {
+      employee = new Engineer(
+        response.name,
+        response.id,
+        response.email,
+        response.gitHubUsername
+      );
+    }
+    employees.push(employee);
+    addMore();
   });
 }
 // Initialize inquirer with conditional questions based on chosen role.
@@ -107,6 +131,12 @@ function init() {
 }
 
 init();
+
+function writeHTML(fileName, data) {
+  fs.writeFile(fileName, data, (err) => {
+    err ? console.log(err) : console.log("Success!");
+  });
+}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
