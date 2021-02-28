@@ -1,0 +1,21 @@
+.team-heading {
+  background-color: lightseagreen;
+}
+
+.card-header {
+  background-color: lightsalmon;
+}
+
+body {
+  background-color: lightslategray;
+}
+.card{
+  margin: 10px;
+}
+
+.team-area{
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
