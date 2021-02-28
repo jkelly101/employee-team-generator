@@ -15,12 +15,11 @@ const Employee = require("./lib/Employee");
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // Questions
-
-const roleQuestion = {
+const selectRole = {
   type: "list",
   name: "role",
   choices: ["Engineer", "Intern", "Manager"],
-  message: "Choose your role.",
+  message: "Choose a role.",
 };
 
 const questions = [
@@ -63,7 +62,8 @@ const employees = [];
 
 // 1 function to ask the initial question of who you are creating
 function roles() {
-  inquirer.prompt(roleQuestion).then((response) => {
+  console.log("Welcome, Manager! Let's  build your Team!");
+  inquirer.prompt(selectRole).then((response) => {
     if (response.role == "Manager") {
       askQuestions(questions.concat(managerQuestion), "Manager");
     } else if (response.role == "Engineer") {
@@ -87,7 +87,7 @@ function addMore() {
     if (response.continue == "yes") {
       roles();
     } else {
-      console.log(employees);
+      // console.log(employees);
       writeHTML(outputPath, render(employees));
     }
   });
@@ -134,7 +134,9 @@ init();
 
 function writeHTML(fileName, data) {
   fs.writeFile(fileName, data, (err) => {
-    err ? console.log(err) : console.log("Success!");
+    err
+      ? console.log(err)
+      : console.log("Success! You're Team has been created!");
   });
 }
 
